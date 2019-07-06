@@ -85,12 +85,12 @@ for epoch in range(1, nb_epoch + 1):
 test_loss = 0
 s = 0.
 for id_user in range(nb_users):
-    input = Variable(training_set[id_user]).unsqueeze(0)
+    input = Variable(training_set[id_user])
     target = Variable(test_set[id_user])
     if torch.sum(target.data > 0) > 0:
         output = sae(input)
         target.require_grad = False
-        output[0][target == 0] = 0
+        output[target == 0] = 0
         loss = criterion(output, target)
         mean_corrector = nb_movies/float(torch.sum(target.data > 0) + 1e-10)
         test_loss += np.sqrt(loss.data * mean_corrector)
